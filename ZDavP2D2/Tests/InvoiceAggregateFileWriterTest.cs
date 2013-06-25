@@ -160,6 +160,18 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue("25062013", 2);
             }
         }
+
+        [Test]
+        public void Should_write_RacUr()
+        {
+            var record = new InvoiceAggregateRecord { RacDat = new DateTime(2013, 6, 25, 18, 07, 12) };
+            _writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("18:07", 3);
+            }
+        }
     }
 
     public static class ReaderAssertExtensions

@@ -1,5 +1,6 @@
 ﻿using System;
 using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 
 namespace ZDavP2D2
 {
@@ -38,8 +39,8 @@ namespace ZDavP2D2
         {
             Map(m => m.DavSt).Name("Dav št").Index(0);
             Map(m => m.RacSt).Name("Rac st").Index(1);
-            Map(m => m.RacDat).Name("Rac dat").Index(2);
-            Map(m => m.RacUra).Name("Rac ura").Index(3);
+            Map(m => m.RacDat).Name("Rac dat").Index(2).TypeConverter<DateTimeConverter>().TypeConverterOption("ddMMyyyy");
+            Map(m => m.RacUra).Name("Rac ura").Index(3).TypeConverter<TimeSpanConverter>().TypeConverterOption("hh:mm");
             Map(m => m.PeId).Name("PE id").Index(4);
             Map(m => m.BlagId).Name("Blag id").Index(5);
             Map(m => m.Kupec).Name("Kupec").Index(6);
@@ -58,6 +59,30 @@ namespace ZDavP2D2
             Map(m => m.SpremUpor).Name("Sprem upor").Index(19);
             Map(m => m.SpremOseba).Name("Sprem oseba").Index(20);
             Map(m => m.RacOpombe).Name("Rac opombe").Index(21);
+        }
+    }
+
+    public class TimeSpanConverter : ITypeConverter
+    {
+        public string ConvertToString(TypeConverterOptions options, object value)
+        {
+            return ((TimeSpan)value).ToString("hh\\:mm");
+        }
+
+        public object ConvertFromString(TypeConverterOptions options, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanConvertFrom(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanConvertTo(Type type)
+        {
+            // We only care about strings.
+            return type == typeof(string);
         }
     }
 }
