@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace ZDavP2D2
 {
@@ -27,12 +29,17 @@ namespace ZDavP2D2
         {
             Debug.WriteLine(string.Format("writing to {0}", _path));
             using (var stream = new FileStream(_path, FileMode.Create, FileAccess.Write, FileShare.Read))
-            using (var writer = new StreamWriter(stream, ASCIIEncoding.GetEncoding("windows-1250")))
-            //using (var csvHelper = null)
+            using (var writer = new StreamWriter(stream, Encoding.GetEncoding("windows-1250")))
             {
-                foreach (var record in records)
+                var csvConfiguration = new CsvConfiguration { Delimiter = ";" };
+                csvConfiguration.RegisterClassMap<InvoiceAggregateRecordMapping>();
+                using (var csvHelper = new CsvWriter(writer, csvConfiguration))
                 {
-                    Console.WriteLine(record);
+                    csvHelper.WriteHeader<InvoiceAggregateRecord>();
+                    foreach (var record in records)
+                    {
+                        csvHelper.WriteRecord(record);
+                    }
                 }
             }
         }
