@@ -51,14 +51,38 @@ namespace ZDavP2D2
             Map(m => m.PlacGot).Name("Plac got").Index(11);
             Map(m => m.PlacKart).Name("Plac kart").Index(12);
             Map(m => m.PlacOstalo).Name("Plac ostalo").Index(13);
-            Map(m => m.SpremDat).Name("Sprem dat").Index(14);
-            Map(m => m.SpremUra).Name("Sprem ura").Index(15);
+            Map(m => m.SpremDat).Name("Sprem dat").Index(14).TypeConverter<DateTimeConverter>().TypeConverterOption("ddMMyyyy");
+            Map(m => m.SpremUra).Name("Sprem ura").Index(15).TypeConverter<TimeSpanConverter>().TypeConverterOption("hh:mm");
             Map(m => m.SpremSt).Name("Sprem st").Index(16);
-            Map(m => m.SpremId).Name("Sprem id").Index(17);
+            Map(m => m.SpremId).Name("Sprem id").Index(17).TypeConverter<SpremIdConverter>();
             Map(m => m.SpremRazlog).Name("Sprem razlog").Index(18);
             Map(m => m.SpremUpor).Name("Sprem upor").Index(19);
             Map(m => m.SpremOseba).Name("Sprem oseba").Index(20);
             Map(m => m.RacOpombe).Name("Rac opombe").Index(21);
+        }
+    }
+
+    public class SpremIdConverter : ITypeConverter
+    {
+        public string ConvertToString(TypeConverterOptions options, object value)
+        {
+            return ((InvoiceChangeType)value).ToString().Substring(0, 1);
+        }
+
+        public object ConvertFromString(TypeConverterOptions options, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanConvertFrom(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanConvertTo(Type type)
+        {
+            // We only care about strings.
+            return type == typeof(string);
         }
     }
 
