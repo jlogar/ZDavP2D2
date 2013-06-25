@@ -36,7 +36,7 @@ namespace ZDavP2D2.Tests
         {
             _writer.Write(new InvoiceAggregateRecord[0]);
 
-            using (var reader =GetReader())
+            using (var reader = GetReader())
             {
                 var line = reader.ReadLine();
                 Assert.AreNotEqual(null, line);
@@ -56,7 +56,7 @@ namespace ZDavP2D2.Tests
                 Assert.Greater(header.Length, 1);
             }
         }
-        
+
         [Test]
         public void Should_write_header()
         {
@@ -92,7 +92,7 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
-        public void Should_write_one_record()
+        public void Should_write_header_and_one_record()
         {
             _writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord { } });
 
@@ -101,18 +101,22 @@ namespace ZDavP2D2.Tests
                 var line = reader.ReadLine();
                 Assert.AreNotEqual(null, line);
                 line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
                 Assert.AreEqual(null, line);
             }
         }
 
         [Test]
-        public void Should_write_two_records()
+        public void Should_write_header_and_two_records()
         {
             _writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord(), new InvoiceAggregateRecord() });
 
             using (var reader = GetReader())
             {
                 var line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
                 Assert.AreNotEqual(null, line);
                 line = reader.ReadLine();
                 Assert.AreNotEqual(null, line);
@@ -129,12 +133,33 @@ namespace ZDavP2D2.Tests
 
             using (var reader = GetReader())
             {
-                var header = reader.ReadLine();
-                Assert.AreNotEqual(null, header);
-                var line = reader.ReadLine();
-                Assert.AreNotEqual(null, line);
-                Assert.AreEqual(record.DavSt, line[0]);
+                reader.AssertFieldValue(record.DavSt, 0);
             }
+        }
+
+        [Test]
+        public void Should_write_RacSt()
+        {
+            var record = new InvoiceAggregateRecord { RacSt = "2013/23" };
+            _writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(record.RacSt, 1);
+            }
+        }
+    }
+
+    public static class ReaderAssertExtensions
+    {
+        public static void AssertFieldValue(this StreamReader reader, string value, int index)
+        {
+            //header
+            reader.ReadLine();
+            var line = reader.ReadLine();
+            Assert.AreNotEqual(null, line);
+            var fields = line.Split(new[] { ';' });
+            Assert.AreEqual(value, fields[index]);
         }
     }
 }
