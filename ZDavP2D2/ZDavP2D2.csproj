@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvoiceAggregateFileWriter.cs" />
     <Compile Include="InvoiceAggregateRecord.cs" />
     <Compile Include="InvoiceChangeType.cs" />
     <Compile Include="InvoiceItemRecord.cs" />
