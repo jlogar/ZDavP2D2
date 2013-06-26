@@ -1,4 +1,5 @@
 ﻿using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 
 namespace ZDavP2D2
 {
@@ -8,7 +9,7 @@ namespace ZDavP2D2
         {
             Map(m => m.DavSt).Name("Dav št");
             Map(m => m.RacSt).Name("Rac st");
-            Map(m => m.RacDat).Name("Rac dat");
+            Map(m => m.RacDat).Name("Rac dat").TypeConverter<DateTimeConverter>().TypeConverterOption("ddMMyyyy");
             Map(m => m.PeId).Name("PE id");
             Map(m => m.BlagId).Name("Blag id");
             Map(m => m.PostSt).Name("Post st");

@@ -74,6 +74,7 @@
     <Compile Include="Tests\FileWriterTestBase.cs" />
     <Compile Include="Tests\InvoiceAggregateFileWriterTest.cs" />
     <Compile Include="Tests\InvoiceItemFileWriterTest.cs" />
+    <Compile Include="Tests\ReaderAssertExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
