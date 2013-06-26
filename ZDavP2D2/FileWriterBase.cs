@@ -32,11 +32,11 @@ namespace ZDavP2D2
         public void Write(IEnumerable<TRecord> records)
         {
             Debug.WriteLine(string.Format("writing to {0}", _path));
+            var csvConfiguration = new CsvConfiguration { Delimiter = ";" };
+            csvConfiguration.RegisterClassMap<TRecordMapping>();
             using (var stream = new FileStream(_path, FileMode.Create, FileAccess.Write, FileShare.Read))
             using (var writer = new StreamWriter(stream, Encoding.GetEncoding("windows-1250")))
             {
-                var csvConfiguration = new CsvConfiguration { Delimiter = ";" };
-                csvConfiguration.RegisterClassMap<TRecordMapping>();
                 using (var csvHelper = new CsvWriter(writer, csvConfiguration))
                 {
                     csvHelper.WriteHeader<TRecord>();
