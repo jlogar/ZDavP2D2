@@ -16,7 +16,7 @@ namespace ZDavP2D2.Tests
         [Test]
         public void Should_write_to_IZPIS_RAČUNI_GLAVE_TXT_in_working_directory_When_no_filename_specified()
         {
-            Writer.Write(new List<InvoiceAggregateRecord>());
+            Writer.Write(new InvoiceAggregateRecord[0]);
 
             Assert.IsTrue(File.Exists("IZPIS RAČUNI GLAVE.TXT"));
         }
@@ -448,6 +448,33 @@ namespace ZDavP2D2.Tests
             using (var reader = GetReader())
             {
                 reader.AssertFieldValue(record.RacOpombe, 21);
+            }
+        }
+
+        [Test]
+        public void Should_write_separator_after_last_header_field()
+        {
+            Writer.Write(new InvoiceAggregateRecord[0]);
+
+            using (var reader = GetReader())
+            {
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
+            }
+        }
+
+        [Test]
+        public void Should_write_separator_after_last_field()
+        {
+            var record = new InvoiceAggregateRecord { RacOpombe = "some notes" };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                //header
+                reader.ReadLine();
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
             }
         }
     }

@@ -336,5 +336,32 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue(record.PostOpombe, 14);
             }
         }
+
+        [Test]
+        public void Should_write_separator_after_last_header_field()
+        {
+            Writer.Write(new InvoiceItemRecord[0]);
+
+            using (var reader = GetReader())
+            {
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
+            }
+        }
+
+        [Test]
+        public void Should_write_separator_after_last_field()
+        {
+            var record = new InvoiceItemRecord { PostOpombe = "soem notes" };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                //header
+                reader.ReadLine();
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
+            }
+        }
     }
 }
