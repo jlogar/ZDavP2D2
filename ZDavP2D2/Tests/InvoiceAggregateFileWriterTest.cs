@@ -19,11 +19,11 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
-        public void Should_write_to_IZPIS_RAČUNI_GLAVE_TXT_by_default_When_no_filename_specified()
+        public void Should_write_to_IZPIS_RAČUNI_GLAVE_TXT_in_working_directory_When_no_filename_specified()
         {
             _writer.Write(new List<InvoiceAggregateRecord>());
 
-            Assert.IsTrue(File.Exists(_writer.Path));
+            Assert.IsTrue(File.Exists("IZPIS RAČUNI GLAVE.TXT"));
         }
 
         private StreamReader GetReader()

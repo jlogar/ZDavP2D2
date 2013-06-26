@@ -27,7 +27,7 @@ namespace ZDavP2D2
 
         public void Write(IEnumerable<TRecord> records)
         {
-            Debug.WriteLine("writing to {0}", _path);
+            Debug.WriteLine(string.Format("writing to {0}", _path));
             using (var stream = new FileStream(_path, FileMode.Create, FileAccess.Write, FileShare.Read))
             using (var writer = new StreamWriter(stream, Encoding.GetEncoding("windows-1250")))
             {
