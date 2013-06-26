@@ -63,12 +63,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileWriterBase.cs" />
     <Compile Include="InvoiceAggregateFileWriter.cs" />
     <Compile Include="InvoiceAggregateRecord.cs" />
     <Compile Include="InvoiceChangeType.cs" />
+    <Compile Include="InvoiceItemFileWriter.cs" />
     <Compile Include="InvoiceItemRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\InvoiceAggregateFileWriterTest.cs" />
+    <Compile Include="Tests\InvoiceItemFileWriterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
