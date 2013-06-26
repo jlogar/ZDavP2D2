@@ -1,40 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using NUnit.Framework;
 
 namespace ZDavP2D2.Tests
 {
     [TestFixture]
-    public class InvoiceAggregateFileWriterTest
+    public class InvoiceAggregateFileWriterTest : FileWriterTestBase<InvoiceAggregateFileWriter>
     {
-        private InvoiceAggregateFileWriter _writer;
-
         [SetUp]
         public void SetUp()
         {
-            _writer = new InvoiceAggregateFileWriter();
+            Writer = new InvoiceAggregateFileWriter();
         }
-
         [Test]
         public void Should_write_to_IZPIS_RAČUNI_GLAVE_TXT_in_working_directory_When_no_filename_specified()
         {
-            _writer.Write(new List<InvoiceAggregateRecord>());
+            Writer.Write(new List<InvoiceAggregateRecord>());
 
             Assert.IsTrue(File.Exists("IZPIS RAČUNI GLAVE.TXT"));
-        }
-
-        private StreamReader GetReader()
-        {
-            return new StreamReader(_writer.Path, Encoding.GetEncoding("windows-1250"));
         }
 
         [Test]
         public void Should_write_one_line_when_no_records_present()
         {
-            _writer.Write(new InvoiceAggregateRecord[0]);
+            Writer.Write(new InvoiceAggregateRecord[0]);
 
             using (var reader = GetReader())
             {
@@ -46,7 +36,7 @@ namespace ZDavP2D2.Tests
         [Test]
         public void Should_write_use_colon_for_separator()
         {
-            _writer.Write(new InvoiceAggregateRecord[0]);
+            Writer.Write(new InvoiceAggregateRecord[0]);
 
             using (var reader = GetReader())
             {
@@ -60,7 +50,7 @@ namespace ZDavP2D2.Tests
         [Test]
         public void Should_write_header()
         {
-            _writer.Write(new InvoiceAggregateRecord[0]);
+            Writer.Write(new InvoiceAggregateRecord[0]);
 
             using (var reader = GetReader())
             {
@@ -94,7 +84,7 @@ namespace ZDavP2D2.Tests
         [Test]
         public void Should_write_header_and_one_record()
         {
-            _writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord { } });
+            Writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord { } });
 
             using (var reader = GetReader())
             {
@@ -110,7 +100,7 @@ namespace ZDavP2D2.Tests
         [Test]
         public void Should_write_header_and_two_records()
         {
-            _writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord(), new InvoiceAggregateRecord() });
+            Writer.Write(new List<InvoiceAggregateRecord> { new InvoiceAggregateRecord(), new InvoiceAggregateRecord() });
 
             using (var reader = GetReader())
             {
@@ -129,7 +119,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_DavSt()
         {
             var record = new InvoiceAggregateRecord { DavSt = "12345678" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -141,7 +131,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_RacSt()
         {
             var record = new InvoiceAggregateRecord { RacSt = "2013/23" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -153,7 +143,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_RacDat()
         {
             var record = new InvoiceAggregateRecord { RacDat = new DateTime(2013, 6, 25, 18, 07, 12) };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -165,7 +155,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_RacUr()
         {
             var record = new InvoiceAggregateRecord { RacDat = new DateTime(2013, 6, 25, 18, 07, 12) };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -177,7 +167,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_PeId()
         {
             var record = new InvoiceAggregateRecord { PeId = "pe" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -189,7 +179,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_BlagId()
         {
             var record = new InvoiceAggregateRecord { BlagId = "blag" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -201,7 +191,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_Kupec()
         {
             var record = new InvoiceAggregateRecord { Kupec = "John Doe" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -213,7 +203,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_IsZaDdv()
         {
             var record = new InvoiceAggregateRecord { IsZaDdv = "12345678" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -225,7 +215,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_RacZnesek()
         {
             var record = new InvoiceAggregateRecord { RacZnesek = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -237,7 +227,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_negative_RacZnesek()
         {
             var record = new InvoiceAggregateRecord { RacZnesek = -987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -249,7 +239,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_Rac85Ddv()
         {
             var record = new InvoiceAggregateRecord { Rac85Ddv = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -261,7 +251,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_Rac20Ddv()
         {
             var record = new InvoiceAggregateRecord { Rac20Ddv = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -273,7 +263,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_PlacGot()
         {
             var record = new InvoiceAggregateRecord { PlacGot = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -285,7 +275,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_negative_PlacGot()
         {
             var record = new InvoiceAggregateRecord { PlacGot = -987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -297,7 +287,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_PlacKart()
         {
             var record = new InvoiceAggregateRecord { PlacKart = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -309,7 +299,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_negative_PlacKart()
         {
             var record = new InvoiceAggregateRecord { PlacKart = -987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -321,7 +311,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_PlacOstalo()
         {
             var record = new InvoiceAggregateRecord { PlacOstalo = 987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -333,7 +323,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_negative_PlacOstalo()
         {
             var record = new InvoiceAggregateRecord { PlacOstalo = -987654.67m };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -345,7 +335,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremDat()
         {
             var record = new InvoiceAggregateRecord { SpremDat = new DateTime(2013, 6, 25, 18, 07, 12) };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -357,7 +347,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremUra()
         {
             var record = new InvoiceAggregateRecord { SpremDat = new DateTime(2013, 6, 25, 18, 07, 12) };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -369,7 +359,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremSt()
         {
             var record = new InvoiceAggregateRecord { SpremSt = 123 };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -381,7 +371,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremId_Storno()
         {
             var record = new InvoiceAggregateRecord { SpremId = InvoiceChangeType.Storno };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -393,7 +383,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremId_Dobropis()
         {
             var record = new InvoiceAggregateRecord { SpremId = InvoiceChangeType.Dobropis };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -405,7 +395,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremId_Ostalo()
         {
             var record = new InvoiceAggregateRecord { SpremId = InvoiceChangeType.Ostalo };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -417,7 +407,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremRazlog()
         {
             var record = new InvoiceAggregateRecord { SpremRazlog = "some reason" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -429,7 +419,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremUpor()
         {
             var record = new InvoiceAggregateRecord { SpremUpor = "some user" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -441,7 +431,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_SpremOseba()
         {
             var record = new InvoiceAggregateRecord { SpremOseba = "John 1 Doe" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {
@@ -453,7 +443,7 @@ namespace ZDavP2D2.Tests
         public void Should_write_RacOpombe()
         {
             var record = new InvoiceAggregateRecord { RacOpombe = "some notes" };
-            _writer.Write(new List<InvoiceAggregateRecord> { record });
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
 
             using (var reader = GetReader())
             {

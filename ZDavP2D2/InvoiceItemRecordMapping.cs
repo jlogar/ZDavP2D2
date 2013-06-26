@@ -6,6 +6,7 @@ namespace ZDavP2D2
     {
         public override void CreateMap()
         {
+            Map(m => m.DavSt);
         }
     }
 }

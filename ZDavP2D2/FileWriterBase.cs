@@ -7,7 +7,11 @@ using CsvHelper.Configuration;
 
 namespace ZDavP2D2
 {
-    public class FileWriterBase<TRecord, TRecordMapping> where TRecordMapping : CsvClassMap
+    public interface IHavePath
+    {
+        string Path { get; }
+    }
+    public class FileWriterBase<TRecord, TRecordMapping>: IHavePath where TRecordMapping : CsvClassMap
     {
         protected string RelativePath;
         protected string FileName;

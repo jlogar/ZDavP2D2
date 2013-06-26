@@ -5,5 +5,6 @@
     /// </summary>
     public class InvoiceItemRecord
     {
+        public string DavSt { get; set; }
     }
 }
