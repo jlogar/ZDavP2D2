@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>Jernej Logar</authors>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
+    <projectUrl>https://github.com/jlogar/ZDavP2D2</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET library for ZDavP-2 support</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <tags>ZDavP-2</tags>
+    <dependencies>
+      <dependency id="CsvHelper" version="2.1.1" />
+      <dependency id="NUnit" version="2.6.2" />
+    </dependencies>
+  </metadata>
+</package>
