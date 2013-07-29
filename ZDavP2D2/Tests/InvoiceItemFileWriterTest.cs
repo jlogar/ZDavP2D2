@@ -338,6 +338,18 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
+        public void Should_write_empty_string_when_SpremSt_is_null()
+        {
+            var record = new InvoiceItemRecord { SpremSt = null };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(string.Empty, 13);
+            }
+        }
+
+        [Test]
         public void Should_write_separator_after_last_header_field()
         {
             Writer.Write(new InvoiceItemRecord[0]);
