@@ -26,7 +26,7 @@ namespace ZDavP2D2
         public DateTime SpremDat { get; set; }
         public TimeSpan SpremUra { get { return SpremDat.TimeOfDay; } }
         public int SpremSt { get; set; }
-        public InvoiceChangeType SpremId { get; set; }
+        public InvoiceChangeType? SpremId { get; set; }
         public string SpremRazlog { get; set; }
         public string SpremUpor { get; set; }
         public string SpremOseba { get; set; }
