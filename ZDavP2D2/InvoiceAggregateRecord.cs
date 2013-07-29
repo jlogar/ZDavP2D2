@@ -66,7 +66,9 @@ namespace ZDavP2D2
     {
         public string ConvertToString(TypeConverterOptions options, object value)
         {
-            return ((InvoiceChangeType)value).ToString().Substring(0, 1);
+            return value == null
+                ? string.Empty
+                : ((InvoiceChangeType)value).ToString().Substring(0, 1);
         }
 
         public object ConvertFromString(TypeConverterOptions options, string text)
@@ -90,7 +92,9 @@ namespace ZDavP2D2
     {
         public string ConvertToString(TypeConverterOptions options, object value)
         {
-            return ((TimeSpan)value).ToString("hh\\:mm");
+            return value == null
+                ? string.Empty
+                : ((TimeSpan)value).ToString("hh\\:mm");
         }
 
         public object ConvertFromString(TypeConverterOptions options, string text)

@@ -477,5 +477,41 @@ namespace ZDavP2D2.Tests
                 Assert.AreEqual(';', line[line.Length - 1]);
             }
         }
+
+        [Test]
+        public void Should_write_empty_string_for_SpremUra_when_SpremDat_null()
+        {
+            var record = new InvoiceAggregateRecord { SpremDat = null, SpremId = InvoiceChangeType.Storno };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(string.Empty, 15);
+            }
+        }
+
+        [Test]
+        public void Should_write_empty_string_for_SpremDat_when_SpremDat_null()
+        {
+            var record = new InvoiceAggregateRecord { SpremDat = null };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(string.Empty, 14);
+            }
+        }
+
+        [Test]
+        public void Should_write_empty_string_for_SpremId_when_SpremId_null()
+        {
+            var record = new InvoiceAggregateRecord { SpremId = null };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(string.Empty, 17);
+            }
+        }
     }
 }
