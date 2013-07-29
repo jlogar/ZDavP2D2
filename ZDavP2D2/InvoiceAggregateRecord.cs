@@ -23,9 +23,9 @@ namespace ZDavP2D2
         public decimal PlacGot { get; set; }
         public decimal PlacKart { get; set; }
         public decimal PlacOstalo { get; set; }
-        public DateTime SpremDat { get; set; }
-        public TimeSpan SpremUra { get { return SpremDat.TimeOfDay; } }
-        public int SpremSt { get; set; }
+        public DateTime? SpremDat { get; set; }
+        public TimeSpan? SpremUra { get { return SpremDat.HasValue ? SpremDat.Value.TimeOfDay : (TimeSpan?)null; } }
+        public int? SpremSt { get; set; }
         public InvoiceChangeType? SpremId { get; set; }
         public string SpremRazlog { get; set; }
         public string SpremUpor { get; set; }
