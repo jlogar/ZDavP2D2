@@ -7,7 +7,7 @@
     <licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
     <projectUrl>https://github.com/jlogar/ZDavP2D2</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>.NET library for ZDavP-2 support</description>
+    <description>.NET library for ZDavP-2 support (Slovenian law - http://www.durs.gov.si/si/aktualno/nove_zahteve_za_racunalniske_programe_za_izdajanje_racunov/)</description>
     <releaseNotes>Initial release.</releaseNotes>
     <tags>ZDavP-2</tags>
     <dependencies>
