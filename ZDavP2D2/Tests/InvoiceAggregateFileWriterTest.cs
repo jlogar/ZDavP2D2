@@ -222,6 +222,17 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue("987654,67", 8);
             }
         }
+        [Test]
+        public void Should_write_RacZnesek_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { RacZnesek = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 8);
+            }
+        }
 
         [Test]
         public void Should_write_negative_RacZnesek()
@@ -246,6 +257,17 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue("987654,67", 9);
             }
         }
+        [Test]
+        public void Should_write_Rac85Ddv_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { Rac85Ddv = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 9);
+            }
+        }
 
         [Test]
         public void Should_write_Rac20Ddv()
@@ -258,6 +280,17 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue("987654,67", 10);
             }
         }
+        [Test]
+        public void Should_write_Rac20Ddv_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { Rac20Ddv = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 10);
+            }
+        }
 
         [Test]
         public void Should_write_PlacGot()
@@ -268,6 +301,17 @@ namespace ZDavP2D2.Tests
             using (var reader = GetReader())
             {
                 reader.AssertFieldValue("987654,67", 11);
+            }
+        }
+        [Test]
+        public void Should_write_PlacGot_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { PlacGot = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 11);
             }
         }
 
@@ -294,6 +338,17 @@ namespace ZDavP2D2.Tests
                 reader.AssertFieldValue("987654,67", 12);
             }
         }
+        [Test]
+        public void Should_write_PlacKart_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { PlacKart = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 12);
+            }
+        }
 
         [Test]
         public void Should_write_negative_PlacKart()
@@ -316,6 +371,17 @@ namespace ZDavP2D2.Tests
             using (var reader = GetReader())
             {
                 reader.AssertFieldValue("987654,67", 13);
+            }
+        }
+        [Test]
+        public void Should_write_PlacOstalo_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceAggregateRecord { PlacOstalo = 125m };
+            Writer.Write(new List<InvoiceAggregateRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 13);
             }
         }
 
