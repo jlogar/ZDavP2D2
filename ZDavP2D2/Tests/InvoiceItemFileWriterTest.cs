@@ -218,6 +218,18 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
+        public void Should_write_PostKol_with_correct_form_when_no_decimals_give()
+        {
+            var record = new InvoiceItemRecord { PostKol = 125m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 8);
+            }
+        }
+
+        [Test]
         public void Should_write_negative_PostKol()
         {
             var record = new InvoiceItemRecord { PostKol = -548795.78m };
@@ -254,6 +266,18 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
+        public void Should_write_PostZnesek_with_correct_form_when_no_decimals_give()
+        {
+            var record = new InvoiceItemRecord { PostZnesek = 125m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 10);
+            }
+        }
+
+        [Test]
         public void Should_write_negative_PostZnesek()
         {
             var record = new InvoiceItemRecord { PostZnesek = -695847.87m };
@@ -278,6 +302,18 @@ namespace ZDavP2D2.Tests
         }
 
         [Test]
+        public void Should_write_Post85Ddv_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceItemRecord { Post85Ddv = 125m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 11);
+            }
+        }
+
+        [Test]
         public void Should_write_negative_Post85Ddv()
         {
             var record = new InvoiceItemRecord { Post85Ddv = -695847.87m };
@@ -298,6 +334,18 @@ namespace ZDavP2D2.Tests
             using (var reader = GetReader())
             {
                 reader.AssertFieldValue("695847,87", 12);
+            }
+        }
+        
+        [Test]
+        public void Should_write_Post20Ddv_with_correct_form_when_no_decimals_given()
+        {
+            var record = new InvoiceItemRecord { Post20Ddv = 125m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
+
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 12);
             }
         }
 
