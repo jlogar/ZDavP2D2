@@ -1,0 +1,1 @@
+..\NuGet.exe pack .\ZDavP2D2.csproj -Properties "Configuration=Release;Platform=AnyCPU" -verbosity detailed
