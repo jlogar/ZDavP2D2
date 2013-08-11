@@ -22,5 +22,6 @@ namespace ZDavP2D2
         public decimal Post20Ddv { get; set; }
         public int? SpremSt { get; set; }
         public string PostOpombe { get; set; }
+        public string DelimiterAfterLastField { get; set; }
     }
 }

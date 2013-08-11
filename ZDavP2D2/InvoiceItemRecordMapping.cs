@@ -22,6 +22,7 @@ namespace ZDavP2D2
             Map(m => m.Post20Ddv).Name("Post 20 % DDV").TypeConverter<DecimalConverter>().TypeConverterOption("#.00");
             Map(m => m.SpremSt).Name("Sprem st");
             Map(m => m.PostOpombe).Name("Post opombe");
+            Map(m => m.DelimiterAfterLastField).Name("").ConvertUsing(x=>"");
         }
     }
 }

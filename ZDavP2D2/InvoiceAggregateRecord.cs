@@ -31,6 +31,7 @@ namespace ZDavP2D2
         public string SpremUpor { get; set; }
         public string SpremOseba { get; set; }
         public string RacOpombe { get; set; }
+        public string DelimiterAfterLastField { get; set; }
     }
 
     public class InvoiceAggregateRecordMapping : CsvClassMap<InvoiceAggregateRecord>
@@ -59,6 +60,7 @@ namespace ZDavP2D2
             Map(m => m.SpremUpor).Name("Sprem upor").Index(19);
             Map(m => m.SpremOseba).Name("Sprem oseba").Index(20);
             Map(m => m.RacOpombe).Name("Rac opombe").Index(21);
+            Map(m => m.DelimiterAfterLastField).Name("").ConvertUsing(x => "");
         }
     }
 
