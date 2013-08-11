@@ -12,7 +12,6 @@
     <tags>ZDavP-2</tags>
     <dependencies>
       <dependency id="CsvHelper" version="2.1.1" />
-      <dependency id="NUnit" version="2.6.2" />
     </dependencies>
   </metadata>
 </package>
