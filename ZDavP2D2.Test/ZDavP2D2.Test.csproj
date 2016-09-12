@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper">
-      <HintPath>..\ZDavP2D2\packages\CsvHelper.2.2.2\lib\net40-client\CsvHelper.dll</HintPath>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\ZDavP2D2\packages\CsvHelper.2.5.0\lib\net40-client\CsvHelper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\ZDavP2D2\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>

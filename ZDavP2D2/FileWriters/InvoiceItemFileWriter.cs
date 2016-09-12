@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZDavP2D2
+namespace ZDavP2D2.FileWriters
 {
     public class InvoiceItemFileWriter : FileWriterBase<InvoiceItemRecord, InvoiceItemRecordMapping>
     {

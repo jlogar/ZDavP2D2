@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZDavP2D2
+namespace ZDavP2D2.FileWriters
 {
     /// <summary>
     /// Writes a CSV named "IZPIS RAČUNI GLAVE.TXT"

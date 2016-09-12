@@ -5,7 +5,7 @@ namespace ZDavP2D2
 {
     public class InvoiceItemRecordMapping : CsvClassMap<InvoiceItemRecord>
     {
-        public override void CreateMap()
+        public InvoiceItemRecordMapping()
         {
             Map(m => m.DavSt).Name("Dav št");
             Map(m => m.RacSt).Name("Rac st");

@@ -5,7 +5,7 @@ using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace ZDavP2D2
+namespace ZDavP2D2.FileWriters
 {
     public interface IHavePath
     {

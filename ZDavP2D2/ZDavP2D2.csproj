@@ -51,8 +51,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\CsvHelper.2.2.2\lib\net40-client\CsvHelper.dll</HintPath>
+      <HintPath>packages\CsvHelper.2.5.0\lib\net40-client\CsvHelper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,20 +63,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileWriterBase.cs" />
-    <Compile Include="InvoiceAggregateFileWriter.cs" />
+    <Compile Include="FileWriters\FileWriterBase.cs" />
+    <Compile Include="FileWriters\InvoiceAggregateFileWriter.cs" />
     <Compile Include="InvoiceAggregateRecord.cs" />
+    <Compile Include="InvoiceAggregateRecordMapping.cs" />
     <Compile Include="InvoiceChangeType.cs" />
-    <Compile Include="InvoiceItemFileWriter.cs" />
+    <Compile Include="FileWriters\InvoiceItemFileWriter.cs" />
     <Compile Include="InvoiceItemRecord.cs" />
     <Compile Include="InvoiceItemRecordMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

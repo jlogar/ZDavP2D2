@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 
-namespace ZDavP2D2.Tests
+namespace ZDavP2D2.Test
 {
     public static class ReaderAssertExtensions
     {
