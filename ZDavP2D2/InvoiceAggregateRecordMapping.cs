@@ -6,7 +6,7 @@ namespace ZDavP2D2
 {
     public class InvoiceAggregateRecordMapping : CsvClassMap<InvoiceAggregateRecord>
     {
-        private const string TimeFormat = "hh\\:mm\\:ss";
+        public const string TimeFormat = "hh\\:mm\\:ss";
 
         public InvoiceAggregateRecordMapping()
         {

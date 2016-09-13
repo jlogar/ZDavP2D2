@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileWriterTestBase.cs" />
+    <Compile Include="HeaderFieldAsserter.cs" />
     <Compile Include="InvoiceAggregateFileWriterTest.cs" />
     <Compile Include="InvoiceItemFileWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,7 +13,7 @@ namespace ZDavP2D2
         public string RacNac { get; set; }
         public string RacStPp { get; set; }
         public string RacStEn { get; set; }
-        public string RacStZap { get; set; }
+        public int RacStZap { get; set; }
         public string Kupec { get; set; }
         public string KupecId { get; set; }
         public decimal RacVred { get; set; }
