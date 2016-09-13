@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using ZDavP2D2.FileWriters;
-using ZDavP2D2.Tests;
 
 namespace ZDavP2D2.Test
 {

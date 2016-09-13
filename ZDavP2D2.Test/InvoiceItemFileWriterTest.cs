@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using ZDavP2D2.FileWriters;
-using ZDavP2D2.Tests;
 
 namespace ZDavP2D2.Test
 {
@@ -87,353 +87,200 @@ namespace ZDavP2D2.Test
             }
         }
 
-        //[Test]
-        //public void Should_write_header_and_one_record()
-        //{
-        //    Writer.Write(new List<InvoiceItemRecord> { new InvoiceItemRecord() });
+        [Test]
+        public void Should_write_header_and_one_record()
+        {
+            Writer.Write(new List<InvoiceItemRecord> { new InvoiceItemRecord() });
 
-        //    using (var reader = GetReader())
-        //    {
-        //        var line = reader.ReadLine();
-        //        Assert.AreNotEqual(null, line);
-        //        line = reader.ReadLine();
-        //        Assert.AreNotEqual(null, line);
-        //        line = reader.ReadLine();
-        //        Assert.AreEqual(null, line);
-        //    }
-        //}
+            using (var reader = GetReader())
+            {
+                var line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
+                Assert.AreEqual(null, line);
+            }
+        }
 
-        //[Test]
-        //public void Should_write_header_and_two_records()
-        //{
-        //    Writer.Write(new List<InvoiceItemRecord> { new InvoiceItemRecord(), new InvoiceItemRecord() });
+        [Test]
+        public void Should_write_header_and_two_records()
+        {
+            Writer.Write(new List<InvoiceItemRecord> { new InvoiceItemRecord(), new InvoiceItemRecord() });
 
-        //    using (var reader = GetReader())
-        //    {
-        //        var line = reader.ReadLine();
-        //        Assert.AreNotEqual(null, line);
-        //        line = reader.ReadLine();
-        //        Assert.AreNotEqual(null, line);
-        //        line = reader.ReadLine();
-        //        Assert.AreNotEqual(null, line);
-        //        line = reader.ReadLine();
-        //        Assert.AreEqual(null, line);
-        //    }
-        //}
+            using (var reader = GetReader())
+            {
+                var line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
+                Assert.AreNotEqual(null, line);
+                line = reader.ReadLine();
+                Assert.AreEqual(null, line);
+            }
+        }
 
-        //[Test]
-        //public void Should_write_DavSt()
-        //{
-        //    var record = new InvoiceItemRecord { DavSt = "12345678" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+        public class FieldAsserter
+        {
+            private int _index;
+            private readonly string[] _fieldValues;
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.DavSt, 0);
-        //    }
-        //}
+            private FieldAsserter(string line)
+            {
+                _index = 0;
+                _fieldValues = line.Split(new[] { ';' });
+            }
 
-        //[Test]
-        //public void Should_write_RacSt()
-        //{
-        //    var record = new InvoiceItemRecord { RacSt = "2013/98" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+            public static FieldAsserter FromReader(StreamReader reader)
+            {
+                //header
+                reader.ReadLine();
+                return new FieldAsserter(reader.ReadLine());
+            }
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.RacSt, 1);
-        //    }
-        //}
+            public FieldAsserter AssertNextValue(string value)
+            {
+                Assert.AreEqual(value, _fieldValues[_index],
+                    string.Format("Expected \"{0}\" at index {1}. Got \"{2}\" instead.", value, _index, _fieldValues[_index]));
+                _index++;
+                return this;
+            }
+        }
 
-        //[Test]
-        //public void Should_write_RacDat()
-        //{
-        //    var record = new InvoiceItemRecord { RacDat = new DateTime(2013, 06, 26, 13, 05, 32) };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+        [Test]
+        public void Should_write_values()
+        {
+            var record = new InvoiceItemRecord
+            {
+                DavSt = "12345678",
+                RacDat = new DateTime(2016, 9, 13, 18, 41, 53),
+                RacStPp = "ZOC",
+                RacStEn = "BL3",
+                RacStZap = 33,
+                DavStZav = "87654321",
+                PostId = "45",
+                PostOpis = "Ekstrakcija",
+                PostKol = 12.3m,
+                PostEm = "KOS",
+                PostEmCena = 3.11m,
+                PostVrednost = 12.3m * 3.11m,
+                Post95Ddv = 3.41m,
+                Post22Ddv = 2.43m,
+                Post8Pav = 1.35m,
+                PostDavkiOstalo = 6.35m,
+                PostOprosc = 11.35m,
+                PostDob76A = 99.63m,
+                PostNeobd = 12.53m,
+                PostPoseb = 3.4m,
+                SpremNepSt = 2,
+                PostOpombe = "opombe za FURS"
+            };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.RacDat.ToString("ddMMyyyy"), 2);
-        //    }
-        //}
+            using (var reader = GetReader())
+            {
+                FieldAsserter
+                    .FromReader(reader)
+                    .AssertNextValue(record.DavSt)
+                    .AssertNextValue(record.RacDat.ToString("yyyyMMdd"))
+                    .AssertNextValue(record.RacCas.ToString("hh\\:mm\\:ss"))
+                    .AssertNextValue("ZOC")
+                    .AssertNextValue("BL3")
+                    .AssertNextValue("33")
+                    .AssertNextValue("87654321")
+                    .AssertNextValue("45")
+                    .AssertNextValue("Ekstrakcija")
+                    .AssertNextValue("12,30")
+                    .AssertNextValue("KOS")
+                    .AssertNextValue("3,11")
+                    .AssertNextValue("38,25")
+                    .AssertNextValue("3,41")
+                    .AssertNextValue("2,43")
+                    .AssertNextValue("1,35")
+                    .AssertNextValue("6,35")
+                    .AssertNextValue("11,35")
+                    .AssertNextValue("99,63")
+                    .AssertNextValue("12,53")
+                    .AssertNextValue("3,40")
+                    .AssertNextValue("2")
+                    .AssertNextValue("opombe za FURS")
+                    ;
+            }
+        }
 
-        //[Test]
-        //public void Should_write_PeId()
-        //{
-        //    var record = new InvoiceItemRecord { PeId = "some pe" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+        [Test]
+        public void Should_write_empty_DavStZav_when_null()
+        {
+            var record = new InvoiceItemRecord { DavStZav = null };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.PeId, 3);
-        //    }
-        //}
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("", 6);
+            }
+        }
+        [Test]
+        public void Should_write_PostKol_with_correct_form_when_no_decimals_give()
+        {
+            var record = new InvoiceItemRecord { PostKol = 125m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //[Test]
-        //public void Should_write_BlagId()
-        //{
-        //    var record = new InvoiceItemRecord { BlagId = "some blag" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("125,00", 9);
+            }
+        }
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.BlagId, 4);
-        //    }
-        //}
+        [Test]
+        public void Should_write_negative_PostKol()
+        {
+            var record = new InvoiceItemRecord { PostKol = -548795.78m };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //[Test]
-        //public void Should_write_PostSt()
-        //{
-        //    var record = new InvoiceItemRecord { PostSt = 321 };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue("-548795,78", 9);
+            }
+        }
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("321", 5);
-        //    }
-        //}
+        [Test]
+        public void Should_write_empty_string_when_SpremNepSt_is_null()
+        {
+            var record = new InvoiceItemRecord { PostPoseb = 1.3m,SpremNepSt = null };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //[Test]
-        //public void Should_write_PostId()
-        //{
-        //    var record = new InvoiceItemRecord { PostId = "123" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+            using (var reader = GetReader())
+            {
+                reader.AssertFieldValue(string.Empty, 21);
+            }
+        }
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.PostId, 6);
-        //    }
-        //}
+        [Test]
+        public void Should_write_separator_after_last_header_field()
+        {
+            Writer.Write(new InvoiceItemRecord[0]);
 
-        //[Test]
-        //public void Should_write_PostOpis()
-        //{
-        //    var record = new InvoiceItemRecord { PostOpis = "some service" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
+            using (var reader = GetReader())
+            {
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
+            }
+        }
 
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.PostOpis, 7);
-        //    }
-        //}
+        [Test]
+        public void Should_write_separator_after_last_field()
+        {
+            var record = new InvoiceItemRecord { PostOpombe = "soem notes" };
+            Writer.Write(new List<InvoiceItemRecord> { record });
 
-        //[Test]
-        //public void Should_write_PostKol()
-        //{
-        //    var record = new InvoiceItemRecord { PostKol = 548795.78m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("548795,78", 8);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_PostKol_with_correct_form_when_no_decimals_give()
-        //{
-        //    var record = new InvoiceItemRecord { PostKol = 125m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("125,00", 8);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_negative_PostKol()
-        //{
-        //    var record = new InvoiceItemRecord { PostKol = -548795.78m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("-548795,78", 8);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_PostEm()
-        //{
-        //    var record = new InvoiceItemRecord { PostEm = "KOS" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.PostEm, 9);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_PostZnesek()
-        //{
-        //    var record = new InvoiceItemRecord { PostZnesek = 695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("695847,87", 10);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_PostZnesek_with_correct_form_when_no_decimals_give()
-        //{
-        //    var record = new InvoiceItemRecord { PostZnesek = 125m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("125,00", 10);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_negative_PostZnesek()
-        //{
-        //    var record = new InvoiceItemRecord { PostZnesek = -695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("-695847,87", 10);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_Post85Ddv()
-        //{
-        //    var record = new InvoiceItemRecord { Post85Ddv = 695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("695847,87", 11);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_Post85Ddv_with_correct_form_when_no_decimals_given()
-        //{
-        //    var record = new InvoiceItemRecord { Post85Ddv = 125m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("125,00", 11);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_negative_Post85Ddv()
-        //{
-        //    var record = new InvoiceItemRecord { Post85Ddv = -695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("-695847,87", 11);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_Post20Ddv()
-        //{
-        //    var record = new InvoiceItemRecord { Post20Ddv = 695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("695847,87", 12);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_Post20Ddv_with_correct_form_when_no_decimals_given()
-        //{
-        //    var record = new InvoiceItemRecord { Post20Ddv = 125m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("125,00", 12);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_negative_Post20Ddv()
-        //{
-        //    var record = new InvoiceItemRecord { Post20Ddv = -695847.87m };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("-695847,87", 12);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_SpremSt()
-        //{
-        //    var record = new InvoiceItemRecord { SpremSt = 12 };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue("12", 13);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_PostOpombe()
-        //{
-        //    var record = new InvoiceItemRecord { PostOpombe = "soem notes" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(record.PostOpombe, 14);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_empty_string_when_SpremSt_is_null()
-        //{
-        //    var record = new InvoiceItemRecord { SpremSt = null };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        reader.AssertFieldValue(string.Empty, 13);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_separator_after_last_header_field()
-        //{
-        //    Writer.Write(new InvoiceItemRecord[0]);
-
-        //    using (var reader = GetReader())
-        //    {
-        //        var line = reader.ReadLine();
-        //        Assert.AreEqual(';', line[line.Length - 1]);
-        //    }
-        //}
-
-        //[Test]
-        //public void Should_write_separator_after_last_field()
-        //{
-        //    var record = new InvoiceItemRecord { PostOpombe = "soem notes" };
-        //    Writer.Write(new List<InvoiceItemRecord> { record });
-
-        //    using (var reader = GetReader())
-        //    {
-        //        //header
-        //        reader.ReadLine();
-        //        var line = reader.ReadLine();
-        //        Assert.AreEqual(';', line[line.Length - 1]);
-        //    }
-        //}
+            using (var reader = GetReader())
+            {
+                //header
+                reader.ReadLine();
+                var line = reader.ReadLine();
+                Assert.AreEqual(';', line[line.Length - 1]);
+            }
+        }
     }
 }
